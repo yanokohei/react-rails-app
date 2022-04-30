@@ -3,6 +3,20 @@ module Api
     class LineFoodsController < ApplicationController
       before_action :set_food, only: %i[create]
 
+      def index
+        line_foods = LineFood.active # 追加中のメニューリスト
+        if line_foods.exists? # インスタンスのデータがDBに存在するかどうか？をtrue/falseで返すメソッド
+          render json: {
+            line_food_ids: line_foods.map { |line_food| line_food.id },
+            restaurant: line_foods[0].restaurant,
+            count: line_foods.sum { |line_food| line_food[:count] },
+            amount: line_foods.sum { |line_food| line_food.total_amount }, # 合計金額
+          }, status: :ok
+        else
+          render json: {}, status: :no_content
+        end
+      end
+
       def create
       # LineFoodのクラスメソッドでactiveがtrueの仮注文リストを呼び出して、
       # そのリストにother_restaurantで引数に追加したメニューに他のレストランのメニューを取り出し、exists?で有無を真偽値で返す

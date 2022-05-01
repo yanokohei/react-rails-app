@@ -1,7 +1,7 @@
 module Api
   module V1
     class LineFoodsController < ApplicationController
-      before_action :set_food, only: %i[create]
+      before_action :set_food, only: %i[create replace]
 
       def index
         line_foods = LineFood.active # 追加中のメニューリスト
@@ -26,6 +26,22 @@ module Api
             existing_restaurant: LineFood.other_restaurant(@ordered_food.restaurant.id).first.restaurant.name,
             new_restaurant: Food.find(params[:food_id]).restaurant.name,
           }, status: :not_acceptable # 不可
+        end
+
+        set_line_food(@ordered_food) # 追加するメニューを渡して仮注文を追加or新規作成し@line_foodを返す
+
+        if @line_food.save
+          render json: {
+            line_food: @line_food
+          }, status: :created
+        else
+          render json: {}, status: :internal_server_error
+        end
+      end
+
+      def replace # 既にある古い仮注文を論理削除し、新しいレコードを作成する
+        LineFood.active.other_restaurant(@ordered_food.restaurant.id).each do |line_food|
+          line_food.update_attribute(:active, false) # 古い仮注文をeachで1件ずつactiveをfalseに更新する
         end
 
         set_line_food(@ordered_food) # 追加するメニューを渡して仮注文を追加or新規作成し@line_foodを返す

@@ -4,6 +4,13 @@ import styled from "styled-components";
 // apis
 import { fetchRestaurants } from "../apis/restaurants";
 
+// reducers
+import {
+  initialState,
+  restaurantsActionTypes,
+  restaurantsReducer,
+} from "../reducers/restaurants";
+
 // images
 import MainLogo from "../images/logo.png";
 import MainCoverImage from "../images/main-cover-image.png";
@@ -26,45 +33,32 @@ const MainCover = styled.img`
   height: 600px;
 `;
 
-const YanoWrapper = styled.div`
-  text-align: center;
-`;
-
-const initialState = 0;
-
-function reducer(countState, action) {
-  switch (action) {
-    case "increment":
-      return countState + 1;
-    case "decrement":
-      return countState - 1;
-    case "reset":
-      return initialState;
-    default:
-      return countState;
-  }
-}
-
 export const Restaurants = () => {
+  const [state, dispatch] = useReducer(restaurantsReducer, initialState);
   useEffect(() => {
-    fetchRestaurants().then((data) => console.log(data));
+    dispatch({ type: restaurantsActionTypes.FETCHING });
+    fetchRestaurants().then((data) =>
+      dispatch({
+        type: restaurantsActionTypes.FETCH_SUCCESS,
+        payload: {
+          restaurants: data.restaurants,
+        },
+      })
+    );
   }, []);
-
-  const [count, dispatch] = useReducer(reducer, initialState);
+  console.log(fetchRestaurants());
   return (
     <>
       <HeaderWrapper>
         <MainLogoImage src={MainLogo} alt="main logo" />
       </HeaderWrapper>
-      <YanoWrapper>
-        <h2>カウント{count}</h2>
-        <button onClick={() => dispatch("increment")}>➕</button>
-        <button onClick={() => dispatch("decrement")}>➖</button>
-      </YanoWrapper>
 
       <MainCoverImageWrapper>
         <MainCover src={MainCoverImage} alt="main cover" />
       </MainCoverImageWrapper>
+      {state.restaurantsList.map((restaurant) => (
+        <div key={restaurant.id}>{restaurant.name}</div>
+      ))}
     </>
   );
 };

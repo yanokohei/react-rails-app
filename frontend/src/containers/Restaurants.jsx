@@ -40,7 +40,7 @@ const MainCover = styled.img`
   height: 600px;
 `;
 
-// コンテンツのリスト全体のスタイル
+// コンテンツのリスト全体のスタイル(横並び、下部の余白)
 const RestaurantsContentsList = styled.div`
   display: flex;
   margin-bottom: 150px;
@@ -83,7 +83,7 @@ export const Restaurants = () => {
       })
     );
   }, []);
-  console.log(fetchRestaurants());
+
   return (
     <>
       <HeaderWrapper>
@@ -104,10 +104,10 @@ export const Restaurants = () => {
             <Skeleton variant="rect" width={450} height={300} />
           </>
         ) : (
-          state.restaurantsList.map((item, index) => (
+          state.restaurantsList.map((item) => (
             <Link
               to={`/restaurants/${item.id}/foods`}
-              key={index}
+              key={item.id}
               style={{ textDecoration: "none" }}
             >
               <RestaurantsContentWrapper>

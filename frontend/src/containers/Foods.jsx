@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
+
+import { fetchFoods } from "../apis/foods";
 
 export const Foods = ({ match }) => {
-  <Foods match={match} />;
+  useEffect(() => {
+    fetchFoods(match.params.restaurantsId).then((data) => console.log(data));
+  }, []);
   console.log(match);
-  return (
-    <Fragment>
-      フード一覧 <p>restaurantsIdは {match.params.restaurantsId} です</p>
-    </Fragment>
-  );
+  return <>フード一覧</>;
 };

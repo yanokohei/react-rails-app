@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -60,6 +60,12 @@ const ItemWrapper = styled.div`
 `;
 
 export const Foods = ({ match }) => {
+  const initialState = {
+    isOpenOrderDialog: false,
+    selectedFood: null,
+    selectedFoodCount: 1,
+  };
+  const [state, setState] = useState(initialState);
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
 
   // ロード時に実行。useReducerの関数にFETCHINGを渡して実行(16行目では状態をまず宣言しておく)

@@ -67,7 +67,12 @@ export const Foods = ({ match }) => {
   };
   const [state, setState] = useState(initialState);
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
-
+  const initialState = {
+    isOpenOrderDialog: false,
+    selectedFood: null,
+    selectedFoodCount: 1,
+  };
+  const [state, setState] = useState(initialState);
   // ロード時に実行。useReducerの関数にFETCHINGを渡して実行(16行目では状態をまず宣言しておく)
   // 次にfetchFoodsでapiにfoodsのIDを渡してJSONデータを取得。
   // 成功時に再度reducerをFETCH_SUCCESSで呼び出して状態を変更 & 取得したAPIをreducer内でrestaurantsListとして状態を更新。

@@ -67,10 +67,12 @@ export const Foods = ({ match }) => {
   };
   const [state, setState] = useState(initialState);
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
+
+  // モーダルのステート
   const initialState = {
     isOpenOrderDialog: false,
     selectedFood: null,
-    selectedFoodCount: 1,
+    selectedFoodCount: 1, // selectedFoodがいくつ選ばれているか？という数量を表す値
   };
   const [state, setState] = useState(initialState);
   // ロード時に実行。useReducerの関数にFETCHINGを渡して実行(16行目では状態をまず宣言しておく)

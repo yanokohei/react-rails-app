@@ -53,4 +53,5 @@ CMD ["/bin/bash"]
 - src ディレクトリの中にソースコードをコピーして全て配置してくれる
 - CMD で Docker の起動時に実行するコマンドを設定
 
-### git reset --hard
+### git reset --hard コミット番号
+対象のコミットをした時点の状態になる

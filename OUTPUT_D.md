@@ -52,3 +52,5 @@ CMD ["/bin/bash"]
 - WORKDIR は作業場所の指定
 - src ディレクトリの中にソースコードをコピーして全て配置してくれる
 - CMD で Docker の起動時に実行するコマンドを設定
+
+### git reset --hard
